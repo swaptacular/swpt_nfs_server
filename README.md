@@ -6,38 +6,14 @@ A handy NFS Server image comprising Alpine Linux and NFS v4 only, over TCP on po
 
 The image comprises of;
 
-- [Alpine Linux](http://www.alpinelinux.org/) v3.8.1. Alpine Linux is a security-oriented, lightweight Linux distribution based on [musl libc](https://www.musl-libc.org/) (v1.1.19) and [BusyBox](https://www.busybox.net/).
+- [Alpine Linux](http://www.alpinelinux.org/) v3.12. Alpine Linux is a security-oriented, lightweight Linux distribution based on [musl libc](https://www.musl-libc.org/) (v1.1.24) and [BusyBox](https://www.busybox.net/).
 - NFS v4 only, over TCP on port 2049. Rpcbind is enabled for now to overcome a bug with slow startup, it shouldn't be required.
 
 [Confd](https://www.confd.io/) is no longer used, making the image simpler & smaller and providing wider device compatibility.
 
-For ARM versions, tag 6-arm is based on [hypriot/rpi-alpine](https://github.com/hypriot/rpi-alpine) and tag 7 onwards based on the stock Alpine image. Tag 7 uses confd v0.16.0.
-
-For previous tags 7, 8 & 9;
-
-- Alpine Linux v3.7.0
-- Musl v1.1.18
-- Confd v0.14.0
-
-For previous tag 6;
-
-- Alpine Linux v3.6.0
-- Musl v1.1.15
-
-For previous tag 5;
-
-- Confd v0.13.0
-
-For previous tag 4;
-
-- Alpine Linux v3.5
-- Confd v0.12.0-dev
-
-**Note:** There were some serious flaws with image versions 3 and earlier. Please use **4** or later. The earlier version are only here in case they are used in automated workflows.
-
 When run, this container will make whatever directory is specified by the environment variable SHARED_DIRECTORY available to NFS v4 clients.
 
-`docker run -d --name nfs --privileged -v /some/where/fileshare:/nfsshare -e SHARED_DIRECTORY=/nfsshare itsthenetwork/nfs-server-alpine:latest`
+`docker run -d --name nfs --privileged -v /some/where/fileshare:/nfsshare -e SHARED_DIRECTORY=/nfsshare quay.io/aminvakil/alpine-nfs-server:latest`
 
 Add `--net=host` or `-p 2049:2049` to make the shares externally accessible via the host networking stack. This isn't necessary if using [Rancher](https://rancher.com/) or linking containers in some other way.
 
@@ -165,7 +141,7 @@ This image can be used to export and share multiple directories with a little mo
 
 To share multiple directories you'll need to mount additional volumes and specify additional environment variables in your docker run command. Here's an example:
 ```
-docker run -d --name nfs --privileged -v /some/where/fileshare:/nfsshare -v /some/where/else:/nfsshare/another -e SHARED_DIRECTORY=/nfsshare -e SHARED_DIRECTORY_2=/nfsshare/another itsthenetwork/nfs-server-alpine:latest
+docker run -d --name nfs --privileged -v /some/where/fileshare:/nfsshare -v /some/where/else:/nfsshare/another -e SHARED_DIRECTORY=/nfsshare -e SHARED_DIRECTORY_2=/nfsshare/another quay.io/aminvakil/alpine-nfs-server:latest
 ```
 
 You should then modify the **nfsd.sh** file to process the extra environment variables and add entries to the exports file. I've already included a working example to get you started:
@@ -273,32 +249,6 @@ exporting *:/nfsshare
 /nfsshare     	<world>
 Starting Mountd in the background...
 Startup successful.
-```
-
-### Dockerfile
-
-The Dockerfile used to create this image is available at the root of the file system on build.
-
-```
-FROM alpine:latest
-LABEL maintainer "Steven Iveson <steve@iveson.eu>"
-LABEL source "https://github.com/sjiveson/nfs-server-alpine"
-LABEL branch "master"
-COPY Dockerfile README.md /
-
-RUN apk add --no-cache --update --verbose nfs-utils bash iproute2 && \
-    rm -rf /var/cache/apk /tmp /sbin/halt /sbin/poweroff /sbin/reboot && \
-    mkdir -p /var/lib/nfs/rpc_pipefs /var/lib/nfs/v4recovery && \
-    echo "rpc_pipefs    /var/lib/nfs/rpc_pipefs rpc_pipefs      defaults        0       0" >> /etc/fstab && \
-    echo "nfsd  /proc/fs/nfsd   nfsd    defaults        0       0" >> /etc/fstab
-
-COPY exports /etc/
-COPY nfsd.sh /usr/bin/nfsd.sh
-COPY .bashrc /root/.bashrc
-
-RUN chmod +x /usr/bin/nfsd.sh
-
-ENTRYPOINT ["/usr/bin/nfsd.sh"]
 ```
 
 ### Acknowlegements
