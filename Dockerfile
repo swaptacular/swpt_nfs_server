@@ -1,8 +1,10 @@
-FROM alpine:3.15.0
+FROM alpine:3.15.1
 ENV container docker
 LABEL maintainer="Amin Vakil <info@aminvakil.com>"
 
-RUN apk add --no-cache nfs-utils==2.5.4-r1 bash=5.1.8-r0 && \
+# hadolint ignore=DL3018
+RUN apk add --no-cache nfs-utils==2.5.4-r1 bash=5.1.16-r0 && \
+    apk add --no-cache --upgrade libretls && \
     mkdir -p /var/lib/nfs/rpc_pipefs /var/lib/nfs/v4recovery && \
     echo "rpc_pipefs    /var/lib/nfs/rpc_pipefs rpc_pipefs      defaults        0       0" >> /etc/fstab && \
     echo "nfsd  /proc/fs/nfsd   nfsd    defaults        0       0" >> /etc/fstab
