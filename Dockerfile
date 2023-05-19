@@ -2,6 +2,7 @@ FROM alpine:3.17.3
 ENV container docker
 LABEL maintainer="Amin Vakil <info@aminvakil.com>"
 
+#hadolint ignore=DL3018
 RUN apk add --no-cache nfs-utils bash && \
     mkdir -p /var/lib/nfs/rpc_pipefs /var/lib/nfs/v4recovery && \
     echo "rpc_pipefs    /var/lib/nfs/rpc_pipefs rpc_pipefs      defaults        0       0" >> /etc/fstab && \
