@@ -1,4 +1,4 @@
-FROM alpine:3.21.3
+FROM alpine:3.21.3 AS app-image
 ENV container docker
 
 #hadolint ignore=DL3018
