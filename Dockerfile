@@ -7,7 +7,8 @@ RUN apk add --no-cache nfs-utils bash git openssh-client && \
     echo "rpc_pipefs    /var/lib/nfs/rpc_pipefs rpc_pipefs      defaults        0       0" >> /etc/fstab && \
     echo "nfsd  /proc/fs/nfsd   nfsd    defaults        0       0" >> /etc/fstab
 
-RUN echo "IdentityFile /etc/ssh/id_rsa" >> /etc/ssh/ssh_config && \
+RUN echo "HashKnownHosts no" >> /etc/ssh/ssh_config && \
+    echo "IdentityFile /etc/ssh/id_rsa" >> /etc/ssh/ssh_config && \
     echo "IdentityFile /etc/ssh/id_ed25519" >> /etc/ssh/ssh_config
 
 COPY exports /etc/
