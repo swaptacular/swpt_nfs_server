@@ -61,8 +61,8 @@ fi
 cp -n .ssh_known_hosts /etc/ssh/ssh_known_hosts
 
 # Ensure a symlink to "${NODE_DATA_SUBDIR}" exists
-if ! [ -e "${NODE_DATA_SUBDIR}" ]; then
-  ln -s "${NODE_DATA_SUBDIR}" .node-data
+if ! [ -e .node-data ]; then
+  ln -ns "${NODE_DATA_SUBDIR}" .node-data
 fi
 
 # This loop periodically pulls the Git repository
