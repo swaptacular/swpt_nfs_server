@@ -19,6 +19,24 @@ if [ -z "${SHARED_DIRECTORY}" ]; then
   exit 1
 fi
 
+# Check if the NODE_DATA_SUBDIR variable is empty
+if [ -z "${NODE_DATA_SUBDIR}" ]; then
+  echo "The NODE_DATA_SUBDIR environment variable is unset or null, exiting..."
+  exit 1
+fi
+
+# Check if the GIT_SERVER variable is empty
+if [ -z "${GIT_SERVER}" ]; then
+  echo "The GIT_SERVER environment variable is unset or null, exiting..."
+  exit 1
+fi
+
+# Check if the GIT_PORT variable is empty
+if [ -z "${GIT_PORT}" ]; then
+  echo "The GIT_PORT environment variable is unset or null, exiting..."
+  exit 1
+fi
+
 # Check if the GIT_REPOSITORY variable is empty
 if [ -z "${GIT_REPOSITORY}" ]; then
   echo "The GIT_REPOSITORY environment variable is unset or null, exiting..."
@@ -31,9 +49,21 @@ IFS=$'\n\t'
 
 # Initialize the shared directory if necessary
 if [ -z "$( ls -A ${SHARED_DIRECTORY})" ]; then
+  ssh-keyscan -p "${GIT_PORT}" -t rsa "${GIT_SERVER}" > /etc/ssh/ssh_known_hosts
   git clone "${GIT_REPOSITORY}" "${SHARED_DIRECTORY}"
 fi
 cd "${SHARED_DIRECTORY}"
+
+# Ensure ".ssh_known_hosts" and "/etc/ssh/ssh_known_hosts" files exist
+if ! [ -e .ssh_known_hosts ]; then
+  ssh-keyscan -p "${GIT_PORT}" -t rsa "${GIT_SERVER}" > .ssh_known_hosts
+fi
+cp -n .ssh_known_hosts /etc/ssh/ssh_known_hosts
+
+# Ensure a symlink to "${NODE_DATA_SUBDIR}" exists
+if ! [ -e "${NODE_DATA_SUBDIR}" ]; then
+  ln -s "${NODE_DATA_SUBDIR}" .node-data
+fi
 
 # This loop periodically pulls the Git repository
 while true; do
