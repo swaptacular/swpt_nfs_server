@@ -28,6 +28,8 @@ variables:
 `GIT_SERVER`, `GIT_PORT`, `GIT_REPOSITORY_PATH`, and
 `NODE_DATA_SUBDIR` variables should not be changed.
 
+The rest of this file is more or less the same as in the original repo.
+
 ## Overview
 
 A handy NFS Server image comprising Alpine Linux and NFS v4 only, over TCP on port 2049.
