@@ -1,8 +1,32 @@
-# nfs-server-alpine
+# An NFS Server, customized for the needs of Swaptacular deployments on Kubernetes
 
-A handy NFS Server image comprising Alpine Linux and NFS v4 only, over TCP on port 2049.
+The main addition compared to the [original
+repo](https://github.com/aminvakil/docker-alpine-nfs-server) is to
+change the entrypoint to allow passing a `git-pull` argument, that
+starts a process which periodically executes `git pull` from a git
+repository. This can be configured with the following environment
+variables:
+
+- `SHARED_DIRECTORY` the directory which will contain the Git working
+  copy;
+
+- `GIT_SERVER` the hostname of the Git server;
+
+- `GIT_PORT` the port on which the Git server is running;
+
+- `GIT_REPOSITORY_PATH` the path tho the Git repository
+  (`/srv/git/fluxcd.git` for example);
+
+- `NODE_DATA_SUBDIR` the relative path in the repository to the
+  `node-data` subdir (`apps/dev/swpt-accounts/node-data` for example).
+
+**IMPORTANT NOTE:** Once a `SHARED_DIRECTORY` has been chosen, the
+`GIT_SERVER`, `GIT_PORT`, `GIT_REPOSITORY_PATH`, and
+`NODE_DATA_SUBDIR` variables should not be changed.
 
 ## Overview
+
+A handy NFS Server image comprising Alpine Linux and NFS v4 only, over TCP on port 2049.
 
 The image comprises of;
 
