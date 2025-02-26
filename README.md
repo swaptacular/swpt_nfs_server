@@ -14,7 +14,7 @@ variables:
 
 - `GIT_PORT` is the port on which the Git server is listening;
 
-- `GIT_REPOSITORY_PATH` is the path tho the Git repository
+- `GIT_REPOSITORY_PATH` is the path to the Git repository
   ("/srv/git/fluxcd.git" for example);
 
 - `NODE_DATA_SUBDIR` is the relative path in the repository to the
