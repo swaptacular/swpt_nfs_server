@@ -7,17 +7,17 @@ starts a process which periodically executes `git pull` from a git
 repository. This can be configured with the following environment
 variables:
 
-- `SHARED_DIRECTORY` the directory which will contain the Git working
-  copy;
+- `SHARED_DIRECTORY` is the directory which will contain the Git
+  working copy;
 
-- `GIT_SERVER` the hostname of the Git server;
+- `GIT_SERVER` is the hostname of the Git server;
 
-- `GIT_PORT` the port on which the Git server is listening;
+- `GIT_PORT` is the port on which the Git server is listening;
 
-- `GIT_REPOSITORY_PATH` the path tho the Git repository
+- `GIT_REPOSITORY_PATH` is the path tho the Git repository
   ("/srv/git/fluxcd.git" for example);
 
-- `NODE_DATA_SUBDIR` the relative path in the repository to the
+- `NODE_DATA_SUBDIR` is the relative path in the repository to the
   sub-directory containing node's data
   ("apps/dev/swpt-accounts/node-data" for example).
 
