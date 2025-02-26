@@ -12,13 +12,17 @@ variables:
 
 - `GIT_SERVER` the hostname of the Git server;
 
-- `GIT_PORT` the port on which the Git server is running;
+- `GIT_PORT` the port on which the Git server is listening;
 
 - `GIT_REPOSITORY_PATH` the path tho the Git repository
-  (`/srv/git/fluxcd.git` for example);
+  ("/srv/git/fluxcd.git" for example);
 
 - `NODE_DATA_SUBDIR` the relative path in the repository to the
-  `node-data` subdir (`apps/dev/swpt-accounts/node-data` for example).
+  sub-directory containing node's data
+  ("apps/dev/swpt-accounts/node-data" for example).
+
+  A symlink named `.node-data` will be created in the
+  `SHARED_DIRECTORY` directory, directly targeting this sub-directory.
 
 **IMPORTANT NOTE:** Once a `SHARED_DIRECTORY` has been chosen, the
 `GIT_SERVER`, `GIT_PORT`, `GIT_REPOSITORY_PATH`, and
