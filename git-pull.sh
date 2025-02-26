@@ -37,9 +37,9 @@ if [ -z "${GIT_PORT}" ]; then
   exit 1
 fi
 
-# Check if the GIT_REPOSITORY variable is empty
-if [ -z "${GIT_REPOSITORY}" ]; then
-  echo "The GIT_REPOSITORY environment variable is unset or null, exiting..."
+# Check if the GIT_REPOSITORY_PATH variable is empty
+if [ -z "${GIT_REPOSITORY_PATH}" ]; then
+  echo "The GIT_REPOSITORY_PATH environment variable is unset or null, exiting..."
   exit 1
 fi
 
@@ -49,8 +49,10 @@ IFS=$'\n\t'
 
 # Initialize the shared directory if necessary
 if [ -z "$( ls -A ${SHARED_DIRECTORY})" ]; then
+  GIT_REPOSITORY="ssh://git@${GIT_SERVER}:${GIT_PORT}${GIT_REPOSITORY_PATH}"
   ssh-keyscan -p "${GIT_PORT}" -t rsa "${GIT_SERVER}" > /etc/ssh/ssh_known_hosts
   git clone "${GIT_REPOSITORY}" "${SHARED_DIRECTORY}"
+  cp -n /etc/ssh/ssh_known_hosts "${SHARED_DIRECTORY}/.ssh_known_hosts"
 fi
 cd "${SHARED_DIRECTORY}"
 
