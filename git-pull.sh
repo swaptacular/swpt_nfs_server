@@ -19,9 +19,9 @@ if [ -z "${SHARED_DIRECTORY}" ]; then
   exit 1
 fi
 
-# Check if the NODE_DATA_SUBDIR variable is empty
-if [ -z "${NODE_DATA_SUBDIR}" ]; then
-  echo "The NODE_DATA_SUBDIR environment variable is unset or null, exiting..."
+# Check if the OVERLAY_SUBDIR variable is empty
+if [ -z "${OVERLAY_SUBDIR}" ]; then
+  echo "The OVERLAY_SUBDIR environment variable is unset or null, exiting..."
   exit 1
 fi
 
@@ -62,9 +62,9 @@ if ! [ -e .ssh_known_hosts ]; then
 fi
 cp -n .ssh_known_hosts /etc/ssh/ssh_known_hosts
 
-# Ensure a symlink to "${NODE_DATA_SUBDIR}" exists
-if ! [ -e .node-data ]; then
-  ln -ns "${NODE_DATA_SUBDIR}" .node-data
+# Ensure a symlink to "${OVERLAY_SUBDIR}" exists
+if ! [ -e .overlay ]; then
+  ln -ns "${OVERLAY_SUBDIR}" .overlay
 fi
 
 # This loop periodically pulls the Git repository

@@ -17,16 +17,16 @@ variables:
 - `GIT_REPOSITORY_PATH` is the path to the Git repository
   ("/srv/git/fluxcd.git" for example);
 
-- `NODE_DATA_SUBDIR` is the relative path in the repository to the
-  sub-directory containing node's data
-  ("apps/dev/swpt-accounts/node-data" for example).
+- `OVERLAY_SUBDIR` is the relative path in the repository to the
+  sub-directory containing the applications' Kustomize overlay that
+  will be running in the Kubernetes cluster. ("apps/dev" for example).
 
-  A symlink named `.node-data` will be created in the
-  `SHARED_DIRECTORY` directory, directly targeting this sub-directory.
+  A symlink named `.overlay` will be created in the `SHARED_DIRECTORY`
+  directory, directly targeting this sub-directory.
 
 **IMPORTANT NOTE:** Once a `SHARED_DIRECTORY` has been chosen, the
-`GIT_SERVER`, `GIT_PORT`, `GIT_REPOSITORY_PATH`, and
-`NODE_DATA_SUBDIR` variables should not be changed.
+`GIT_SERVER`, `GIT_PORT`, `GIT_REPOSITORY_PATH`, and `OVERLAY_SUBDIR`
+variables should not be changed.
 
 The rest of this file is more or less the same as in the original repo.
 
